@@ -21,9 +21,9 @@ int main(int argc, char *argv[])
     for(int i=1;i<lab.rows-1;i++)
     {
         uchar *ptr=lab.ptr<uchar>(i);
-        uchar *ptr2=grayframe.ptr<uchar>(bsize+(i/2)*corsize+((i-1)/2+(i)%2)*wallsize+((i+1)%2)*wallsize/2+(i%2)*corsize/2);
+        uchar *ptr2=grayframe.ptr<uchar>(bsize+(i/2)*corsize+((i-1)/2)*wallsize+((i+1)%2)*wallsize/2+(i%2)*corsize/2);
         for(int j=1;j<lab.cols-1;j++)
-            ptr[j]=ptr2[bsize+(j/2)*corsize+((j-1)/2+(j)%2)*wallsize+((j+1)%2)*wallsize/2+(j%2)*corsize/2];
+            ptr[j]=ptr2[bsize+(j/2)*corsize+((j-1)/2)*wallsize+((j+1)%2)*wallsize/2+(j%2)*corsize/2];
     }
 
 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 //    for(int i=0;i<lab.rows;i++)
 //    {
 //        for(int j=0;j<lab.cols;j++)
-//            cout<<(double)ptr[i*lab.cols+j]<<'\t';
+//            cout<<(int)ptr[i*lab.cols+j]<<'\t';
 //    cout<<endl;
 //    }
 //    cin.get();
@@ -81,11 +81,17 @@ int main(int argc, char *argv[])
                     flag=false;
             }
         for(set<int>::iterator it=opened.begin();it!=opened.end();it++)
-            circle(frame,Point2i(bsize+((*it)%lab.cols-1)/2*(corsize+wallsize)+corsize/2,bsize+((*it)/lab.cols-1)/2*(corsize+wallsize)+corsize/2),5,Scalar(255,0,0),4);
+        {
+            int i=(*it)/lab.cols,j=((*it)%lab.cols);
+            circle(frame,Point2i(bsize+(j/2)*corsize+((j-1)/2)*wallsize+((j+1)%2)*wallsize/2+(j%2)*corsize/2,bsize+(i/2)*corsize+((i-1)/2)*wallsize+((i+1)%2)*wallsize/2+(i%2)*corsize/2),5,Scalar(255,255,0),4);
+        }
         for(set<int>::iterator it=closed.begin();it!=closed.end();it++)
-            circle(frame,Point2i(bsize+((*it)%lab.cols-1)/2*(corsize+wallsize)+corsize/2,bsize+((*it)/lab.cols-1)/2*(corsize+wallsize)+corsize/2),5,Scalar(0,0,255),4);
+        {
+            int i=(*it)/lab.cols,j=((*it)%lab.cols);
+            circle(frame,Point2i(bsize+(j/2)*corsize+((j-1)/2)*wallsize+((j+1)%2)*wallsize/2+(j%2)*corsize/2,bsize+(i/2)*corsize+((i-1)/2)*wallsize+((i+1)%2)*wallsize/2+(i%2)*corsize/2),5,Scalar(0,255,255),4);
+        }
         imshow("Window",frame);
-        waitKey(1);
+        waitKey(60);
     }
 
     int id=stopidx;
